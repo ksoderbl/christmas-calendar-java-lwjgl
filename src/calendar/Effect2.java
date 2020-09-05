@@ -14,14 +14,13 @@ import org.lwjgl.util.glu.GLU;
 // Using this we don't have to write GL11. everywhere.
 // import static org.lwjgl.opengl.GL11.*;
 
-public class Effect1 implements Effect
+public class Effect2 implements Effect
 {
     public static final int WIDTH = 1080;
     public static final int HEIGHT = 720;
-    public static final String TITLE = "Calendar Effect 1";
+    public static final String TITLE = "Calendar Effect 2";
     public static final int FPS_CAP = 60;
-
-    private int frameCount = 0;      /* number of frames drawn */
+    
     private int cubeList;
     private float rot[] = {0.0f, 0.0f, 0.0f};
     /* initial rotation speeds of cubes */
@@ -42,76 +41,133 @@ public class Effect1 implements Effect
     private float matSpecular[]    = { 1.0f, 1.0f, 1.0f, 1.0f };
     private float matEmission[]    = { 0.0f, 0.0f, 0.0f, 1.0f };
     private float matShininess[]   = { 10.0f, 0.0f, 0.0f, 0.0f };
-
-//    public void createWindow(int width, int height, String title) {
-//        try {
-//            DisplayMode mode = new DisplayMode(width, height);
-//            Display.setDisplayMode(mode);
-//            Display.setResizable(true);
-//            Display.create();
-//            Display.setTitle(title);
-//        } catch (LWJGLException e) {
-//            e.printStackTrace();
-//            System.exit(1);
-//        }
-//        reshape(width, height);
-//        System.out.println(GL11.glGetString(GL11.GL_VERSION));
-//    }
-
+    
     public FloatBuffer makeFloatBuffer(float[] array) {
         FloatBuffer buffer = BufferUtils.createFloatBuffer(array.length);
         buffer.put(array);
         buffer.flip();
         return buffer;
     }
-
+    
     public void init() {
-        cubeList = GL11.glGenLists(1);
-        GL11.glNewList(cubeList, GL11.GL_COMPILE);
-        drawCubes(8, 8, 8);
-        GL11.glEndList();
-
-        if (false) {
-            GL11.glShadeModel(GL11.GL_FLAT);
-            GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
-        }
-        GL11.glEnable(GL11.GL_NORMALIZE);
-
-        GL11.glFrontFace(GL11.GL_CCW);
-        GL11.glCullFace(GL11.GL_BACK);
-        GL11.glEnable(GL11.GL_CULL_FACE);
-
-        GL11.glMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT,   makeFloatBuffer(matAmbient));
-        GL11.glMaterial(GL11.GL_FRONT, GL11.GL_SPECULAR,  makeFloatBuffer(matSpecular));
+        float matSpecular[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float matShininess[] = { 50.0f, 0.0f, 0.0f, 0.0f };
+        float lightPosition[] = { 1.0f, 1.0f, 1.0f, 0.0f };
+        float whiteLight[] = { 1.0f, 1.0f, 1.0f, 1.0f };
+        
+        GL11.glMaterial(GL11.GL_FRONT, GL11.GL_SPECULAR, makeFloatBuffer(matSpecular));
         GL11.glMaterial(GL11.GL_FRONT, GL11.GL_SHININESS, makeFloatBuffer(matShininess));
-        GL11.glMaterial(GL11.GL_FRONT, GL11.GL_EMISSION,  makeFloatBuffer(matEmission));
-
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_AMBIENT,  makeFloatBuffer(light0Ambient));
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE,  makeFloatBuffer(light0Diffuse));
-        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, makeFloatBuffer(light0Specular));
-
-        /* global ambient light intensity */
-        GL11.glLightModel(GL11.GL_LIGHT_MODEL_AMBIENT, makeFloatBuffer(globalAmbient));
-
-        /* local viewer ? (GL_FALSE is default) */
-        GL11.glLightModelf(GL11.GL_LIGHT_MODEL_LOCAL_VIEWER, GL11.GL_FALSE);
-
-        /* one-/twosided light model ? (GL_FALSE is default) */
-        GL11.glLightModelf(GL11.GL_LIGHT_MODEL_TWO_SIDE, GL11.GL_FALSE);
-
-        /* allow changing of material using glColor */
-        /*GL11.glColorMaterial(GL11.GL_FRONT, GL11.GL_AMBIENT);*/
-        GL11.glColorMaterial(GL11.GL_FRONT, GL11.GL_DIFFUSE);
-        /*GL11.glColorMaterial(GL11.GL_FRONT, GL11.GL_SPECULAR);*/
-        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+        
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, makeFloatBuffer(lightPosition));
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_DIFFUSE, makeFloatBuffer(whiteLight));
+        GL11.glLight(GL11.GL_LIGHT0, GL11.GL_SPECULAR, makeFloatBuffer(whiteLight));
 
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_LIGHT0);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
 
-        frameCount = 0;
+        // useful?
+        GL11.glEnable(GL11.GL_NORMALIZE);
     }
 
+    
+//    radius
+//    The radius of the sphere. 
+//    slices
+//    The number of subdivisions around the Z axis (similar to lines of longitude). 
+//    stacks
+//    The number of subdivisions along the Z axis (similar to lines of latitude). 
+    public void solidSphere(double radius, int slices, int stacks) {
+        float w2 = 1.0f;
+        GL11.glBegin(GL11.GL_LINE_LOOP);
+        GL11.glVertex3f(w2, w2, w2);
+        GL11.glVertex3f(w2, -w2, w2);
+        GL11.glVertex3f(-w2, -w2, w2);
+        GL11.glVertex3f(-w2, w2, w2);
+        GL11.glEnd();
+        
+        GL11.glBegin(GL11.GL_LINE_LOOP);
+        GL11.glVertex3f(w2, w2, -w2);
+        GL11.glVertex3f(w2, -w2, -w2);
+        GL11.glVertex3f(-w2, -w2, -w2);
+        GL11.glVertex3f(-w2, w2, -w2);
+        GL11.glEnd();
+
+        GL11.glBegin(GL11.GL_LINES);
+        GL11.glVertex3f(w2, w2, w2);
+        GL11.glVertex3f(w2, w2, -w2);
+        GL11.glVertex3f(w2, -w2, w2);
+        GL11.glVertex3f(w2, -w2, -w2);
+        GL11.glVertex3f(-w2, -w2, w2);
+        GL11.glVertex3f(-w2, -w2, -w2);
+        GL11.glVertex3f(-w2, w2, w2);
+        GL11.glVertex3f(-w2, w2, -w2);
+        GL11.glEnd();
+        
+        double twopi = 2 * Math.PI;
+        
+        // Normals are not correct
+        
+//        // torus
+//        for (int i = 0; i < stacks; i++) {
+//            GL11.glBegin(GL11.GL_QUAD_STRIP);
+//            for (int j = 0; j <= slices; j++) {
+//                for (int k = 1; k >= 0; k--) {
+//                    double s = (i + k) % stacks + 0.5;
+//                    double t = (double) (j % slices);
+//                    double x = (1 + .3 * Math.cos(s * twopi / stacks)) * Math.cos(t * twopi / slices);
+//                    double y = (1 + .3 * Math.cos(s * twopi / stacks)) * Math.sin(t * twopi / slices);
+//                    double z = .3 * Math.sin(s * twopi / stacks);
+//
+//                    GL11.glNormal3d(x, y, z);
+//                    GL11.glVertex3d(x, y, z);
+//                }
+//            }
+//            GL11.glEnd();
+//        }
+
+//        // hourglass
+//        for (int i = 0; i < stacks; i++) {
+//            GL11.glBegin(GL11.GL_QUAD_STRIP);
+//            for (int j = 0; j <= slices; j++) {
+//                for (int k = 1; k >= 0; k--) {
+//                    double s = (i + k) % stacks + 0.5;
+//                    double t = (double) (j % slices);
+//                    double x = radius * Math.cos(t * twopi / slices) * Math.sin(s * twopi / stacks);
+//                    double y = radius * Math.sin(t * twopi / slices) * Math.sin(s * twopi / stacks);
+//                    double z = radius * Math.sin(s * twopi / stacks);
+//                    
+//                    GL11.glNormal3d(x, y, z);
+//                    GL11.glVertex3d(x, y, z);
+//                }
+//            }
+//            GL11.glEnd();
+//        }
+//
+
+        // sphere
+        for (int i = 0; i < stacks; i++) {
+            GL11.glBegin(GL11.GL_QUAD_STRIP);
+            for (int j = 0; j <= slices; j++) {
+                for (int k = 1; k >= 0; k--) {
+                    double s = (i + k) % stacks + 0.5;
+                    double t = (double) (j % slices);
+                    double x = radius * Math.cos(t * twopi / slices) * Math.sin(s * twopi / stacks);
+                    double y = radius * Math.sin(t * twopi / slices) * Math.sin(s * twopi / stacks);
+                    double z = radius * Math.cos(s * twopi / stacks);
+                    
+                    // Length of vector (x, y, z) equals radius, thefore divide each of x, y and z in the glNormal3d
+                    // by radius.
+                    
+                    GL11.glNormal3d(x / radius, y / radius, z / radius);
+                    GL11.glVertex3d(x, y, z);
+                    
+                }
+            }
+            GL11.glEnd();
+        }
+    }
+    
     public void drawCube()
     {
         if (false) {
@@ -121,10 +177,10 @@ public class Effect1 implements Effect
             GL11.glVertex3f(0.0f, 0.0f, 0.5f);
             GL11.glVertex3f(0.0f, 0.0f, 1.5f);
             GL11.glEnd();
-            GL11.glEnable(GL11.GL_LIGHTING);
+            GL11.glEnable(GL11.GL_LIGHTING);    
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         }
-
+        
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glNormal3f(0.0f, 0.0f, 1.0f);
         GL11.glVertex3f( 0.5f,  0.5f,  0.5f); /* front face */
@@ -172,10 +228,10 @@ public class Effect1 implements Effect
         float d;
 
         /* distance between two adjacent cubes' centers */
-        d = 1.5f;
-
+        d = 1.5f; 
+        
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
+                    
         for (i = 0; i < nx; i++) {
             for (j = 0; j < ny; j++) {
                 for (k = 0; k < nz; k++) {
@@ -183,22 +239,22 @@ public class Effect1 implements Effect
                     r = ((float)(nx - i)) / nx;
                     g = ((float)(ny - j)) / ny;
                     b = ((float)(nz - k)) / nz;
-
+                    
                     x = ((0.5f * nx - i) - 0.5f) * d;
                     y = ((0.5f * ny - j) - 0.5f) * d;
                     z = ((0.5f * nz - k) - 0.5f) * d;
-
+                    
                     GL11.glTranslatef(x, y, z);
                     GL11.glColor3f(r, g, b);
                     drawCube();
-
+                    
                     GL11.glPopMatrix();
                 }
             }
         }
 
     }
-
+    
     public void display() {
         int i;
         //char s[256];
@@ -214,7 +270,7 @@ public class Effect1 implements Effect
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
         GL11.glLight(GL11.GL_LIGHT0, GL11.GL_POSITION, makeFloatBuffer(light0Position));
-
+        
         GLU.gluLookAt(
             0.0f, 0.0f, my_z,        /* eye */
             0.0f, 0.0f, my_z - 1.0f,  /* ctr */
@@ -231,9 +287,9 @@ public class Effect1 implements Effect
         }
 
 
-        //drawCubes(16, 16, 16);
+        drawCubes(16, 16, 16);
 
-        GL11.glCallList(cubeList);
+        //glCallList(cube_list);
 
         GL11.glDisable(GL11.GL_LIGHTING);
 
@@ -246,13 +302,13 @@ public class Effect1 implements Effect
 //
 //        frame_count++;
     }
-
+    
     public void mouse() {
         if (Mouse.isButtonDown(0)) {
             System.out.println("Mouse button 0 is down");
         }
     }
-
+    
     public void keyboard() {
         if (Keyboard.isKeyDown(Keyboard.KEY_X)) {
             GL11.glRotatef( 2f, 1.0f, 0.0f, 0.0f);
@@ -283,7 +339,7 @@ public class Effect1 implements Effect
             System.exit(0);
         }
     }
-
+    
     public void reshape(int w, int h) {
         float fw = (float)w;
         float fh = (float)h;
@@ -293,7 +349,7 @@ public class Effect1 implements Effect
         GL11.glLoadIdentity();
         GLU.gluPerspective(50.0f, fw / fh, 0.1f, 1000.0f);
     }
-
+    
     public void start() {
         Window window = new Window(WIDTH, HEIGHT, TITLE);
         reshape(WIDTH, HEIGHT);
@@ -304,21 +360,25 @@ public class Effect1 implements Effect
 
             mouse();
             keyboard();
-
+            
             display();
-
+            
+            
+//            if (!Mouse.isButtonDown(0)) {
+//            }
+            
             if (Display.wasResized()) {
                 reshape(Display.getWidth(), Display.getHeight());
             }
-
+            
             Display.update();
         }
-
+        
         Display.destroy();
     }
-
+    
     public static void main(String[] args) {
-        Effect1 effect = new Effect1();
+        Effect2 effect = new Effect2();
         effect.start();
     }
 }
