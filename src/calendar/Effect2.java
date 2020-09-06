@@ -3,11 +3,9 @@ package calendar;
 import java.nio.FloatBuffer;
 
 import org.lwjgl.BufferUtils;
-import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.GLU;
 
@@ -350,35 +348,12 @@ public class Effect2 implements Effect
         GLU.gluPerspective(50.0f, fw / fh, 0.1f, 1000.0f);
     }
     
-    public void start() {
-        Window window = new Window(WIDTH, HEIGHT, TITLE);
-        reshape(WIDTH, HEIGHT);
-        init();
-
-        while (!Display.isCloseRequested()) {
-            Display.sync(FPS_CAP);
-
-            mouse();
-            keyboard();
-            
-            display();
-            
-            
-//            if (!Mouse.isButtonDown(0)) {
-//            }
-            
-            if (Display.wasResized()) {
-                reshape(Display.getWidth(), Display.getHeight());
-            }
-            
-            Display.update();
-        }
-        
-        Display.destroy();
+    public String getName() {
+    	return "\"Pulsar\"";
     }
     
     public static void main(String[] args) {
         Effect2 effect = new Effect2();
-        effect.start();
+        Main.runSingleEffect(effect);
     }
 }

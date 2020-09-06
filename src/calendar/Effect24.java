@@ -21,4 +21,7 @@ public class Effect24 implements Effect {
 		
 	}
 
+	public String getName() {
+    	return "Stars only";
+    }
 }

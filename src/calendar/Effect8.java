@@ -20,5 +20,8 @@ public class Effect8 implements Effect {
 	public void display() {
 		
 	}
-
+	
+	public String getName() {
+    	return "Gouraud shaded Icosahedron";
+    }
 }

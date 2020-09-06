@@ -294,31 +294,12 @@ public class Effect1 implements Effect
         GLU.gluPerspective(50.0f, fw / fh, 0.1f, 1000.0f);
     }
 
-    public void start() {
-        Window window = new Window(WIDTH, HEIGHT, TITLE);
-        reshape(WIDTH, HEIGHT);
-        init();
-
-        while (!Display.isCloseRequested()) {
-            Display.sync(FPS_CAP);
-
-            mouse();
-            keyboard();
-
-            display();
-
-            if (Display.wasResized()) {
-                reshape(Display.getWidth(), Display.getHeight());
-            }
-
-            Display.update();
-        }
-
-        Display.destroy();
+    public String getName() {
+    	return "Colored Cubes";
     }
-
+    
     public static void main(String[] args) {
         Effect1 effect = new Effect1();
-        effect.start();
+        Main.runSingleEffect(effect);
     }
 }

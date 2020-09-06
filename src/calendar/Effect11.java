@@ -21,4 +21,7 @@ public class Effect11 implements Effect {
 		
 	}
 
+	public String getName() {
+    	return "Stars only";
+    }
 }

@@ -21,4 +21,7 @@ public class Effect15 implements Effect {
 		
 	}
 
+	public String getName() {
+    	return "Hypnotic Patterns";
+    }
 }

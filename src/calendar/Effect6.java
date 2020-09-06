@@ -20,5 +20,8 @@ public class Effect6 implements Effect {
 	public void display() {
 		
 	}
-
+	
+	public String getName() {
+    	return "Flag";
+    }
 }

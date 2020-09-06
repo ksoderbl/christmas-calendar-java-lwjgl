@@ -21,4 +21,7 @@ public class Effect16 implements Effect {
 		
 	}
 
+	public String getName() {
+    	return "\"Brownian\" motion";
+    }
 }

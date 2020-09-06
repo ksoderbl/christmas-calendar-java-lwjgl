@@ -70,6 +70,31 @@ public class Main {
 
         Display.destroy();
 	}
+
+	// Method to start specific effect without running the whole calendar
+    public static void runSingleEffect(Effect effect) {
+        Window window = new Window(windowWidth, windowHeight, effect.getName());
+        effect.reshape(windowWidth, windowHeight);
+        effect.init();
+
+        while (!Display.isCloseRequested()) {
+            Display.sync(FPS_CAP);
+
+            effect.mouse();
+            effect.keyboard();
+
+            if (Display.wasResized()) {
+                effect.reshape(Display.getWidth(), Display.getHeight());
+            }
+            
+            effect.display();
+            
+            Display.update();
+        }
+        
+        Display.destroy();
+    }
+	
 	
 	public static void main(String[] args) {
     	Window window = new Window(windowWidth, windowHeight, windowTitle);

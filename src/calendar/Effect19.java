@@ -21,4 +21,7 @@ public class Effect19 implements Effect {
 		
 	}
 
+	public String getName() {
+    	return "Stars only";
+    }
 }

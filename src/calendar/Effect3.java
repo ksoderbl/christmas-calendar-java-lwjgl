@@ -21,4 +21,7 @@ public class Effect3 implements Effect {
 		
 	}
 
+    public String getName() {
+    	return "Objects";
+    }
 }

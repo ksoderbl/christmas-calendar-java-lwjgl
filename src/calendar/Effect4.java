@@ -21,4 +21,7 @@ public class Effect4 implements Effect {
 		
 	}
 
+	public String getName() {
+    	return "Ball";
+    }
 }

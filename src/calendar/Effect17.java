@@ -21,4 +21,7 @@ public class Effect17 implements Effect {
 		
 	}
 
+	public String getName() {
+    	return "Spotlight";
+    }
 }

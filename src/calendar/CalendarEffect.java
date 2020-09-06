@@ -21,4 +21,8 @@ public class CalendarEffect implements Effect {
 	public void display() {
 		
 	}
+	
+	public String getName() {
+    	return "Christmas calendar";
+    }
 }
