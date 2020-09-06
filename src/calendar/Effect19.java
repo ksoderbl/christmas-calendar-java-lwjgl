@@ -24,4 +24,9 @@ public class Effect19 implements Effect {
 	public String getName() {
     	return "Stars only";
     }
+	
+	public static void main(String[] args) {
+        Effect19 effect = new Effect19();
+        Main.runSingleEffect(effect);
+    }
 }

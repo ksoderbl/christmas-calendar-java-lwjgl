@@ -24,4 +24,9 @@ public class Effect20 implements Effect {
 	public String getName() {
     	return "Electricity";
     }
+	
+	public static void main(String[] args) {
+        Effect20 effect = new Effect20();
+        Main.runSingleEffect(effect);
+    }
 }

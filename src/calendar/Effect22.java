@@ -24,4 +24,9 @@ public class Effect22 implements Effect {
 	public String getName() {
     	return "Objects II";
     }
+	
+	public static void main(String[] args) {
+        Effect22 effect = new Effect22();
+        Main.runSingleEffect(effect);
+    }
 }

@@ -24,4 +24,9 @@ public class Effect15 implements Effect {
 	public String getName() {
     	return "Hypnotic Patterns";
     }
+	
+    public static void main(String[] args) {
+        Effect15 effect = new Effect15();
+        Main.runSingleEffect(effect);
+    }
 }

@@ -24,4 +24,9 @@ public class Effect14 implements Effect {
 	public String getName() {
     	return "Euro Stars";
     }
+	
+    public static void main(String[] args) {
+        Effect14 effect = new Effect14();
+        Main.runSingleEffect(effect);
+    }
 }

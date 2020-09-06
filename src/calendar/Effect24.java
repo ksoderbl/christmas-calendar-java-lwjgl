@@ -22,6 +22,11 @@ public class Effect24 implements Effect {
 	}
 
 	public String getName() {
-    	return "Stars only";
+    	return "Earth and Sun";
+    }
+	
+	public static void main(String[] args) {
+        Effect24 effect = new Effect24();
+        Main.runSingleEffect(effect);
     }
 }
