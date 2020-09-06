@@ -3,17 +3,21 @@ package calendar;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.Display;
+
 public class Main {
 	
 	public static final int windowWidth = 1080;
 	public static final int windowHeight = 720;
 	public static final String windowTitle = "Christmas Calendar in Java and LWJGL";
 	
+	public static final int FPS_CAP = 60;
+	
 	public static List<Effect> effects = new ArrayList<Effect>(); 
+	
+	public static Effect currentEffect = null;
 
-    public static void main(String[] args) {
-    	Window window = new Window(windowWidth, windowHeight, windowTitle);
-    	
+	public static void initEffects() {
     	effects.add(new CalendarEffect());
     	effects.add(new Effect1());
     	effects.add(new Effect2());
@@ -40,7 +44,37 @@ public class Main {
     	effects.add(new Effect23());
     	effects.add(new Effect24());
     	
-    	Effect effect = effects.get(1);
+    	currentEffect = effects.get(1);
         //effect.start();
+	}
+	
+	
+	public static void mainLoop() {
+		currentEffect.init();
+		currentEffect.reshape(Display.getWidth(), Display.getHeight());
+		
+        while (!Display.isCloseRequested()) {
+            Display.sync(FPS_CAP);
+
+            currentEffect.mouse();
+            currentEffect.keyboard();
+
+            if (Display.wasResized()) {
+            	currentEffect.reshape(Display.getWidth(), Display.getHeight());
+            }
+            
+            currentEffect.display();
+
+            Display.update();
+        }
+
+        Display.destroy();
+	}
+	
+	public static void main(String[] args) {
+    	Window window = new Window(windowWidth, windowHeight, windowTitle);
+    	
+    	initEffects();
+    	mainLoop();
     }
 }
