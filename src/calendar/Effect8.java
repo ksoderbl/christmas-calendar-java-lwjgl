@@ -24,4 +24,9 @@ public class Effect8 implements Effect {
 	public String getName() {
     	return "Gouraud shaded Icosahedron";
     }
+	
+    public static void main(String[] args) {
+        Effect8 effect = new Effect8();
+        Main.runSingleEffect(effect);
+    }
 }

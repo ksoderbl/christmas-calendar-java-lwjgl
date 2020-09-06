@@ -24,4 +24,9 @@ public class Effect4 implements Effect {
 	public String getName() {
     	return "Ball";
     }
+	
+    public static void main(String[] args) {
+        Effect4 effect = new Effect4();
+        Main.runSingleEffect(effect);
+    }
 }

@@ -24,4 +24,9 @@ public class Effect6 implements Effect {
 	public String getName() {
     	return "Flag";
     }
+	
+    public static void main(String[] args) {
+        Effect6 effect = new Effect6();
+        Main.runSingleEffect(effect);
+    }
 }
